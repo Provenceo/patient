@@ -5,7 +5,15 @@
         <van-col span="24">
           <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
             <van-swipe-item v-for="(image, index) in images" :key="index">
-              <img :src="image" style="height:100%;width:100%" />
+              <!-- {{image.img}} -->
+              <a :href="image.url">
+                <img
+                  :src="image.img"
+                  :title="image.info"
+                  :alt="image.title"
+                  style="height:100%;width:100%"
+                />
+              </a>
             </van-swipe-item>
           </van-swipe>
         </van-col>
@@ -40,111 +48,55 @@
             </van-row>
           </div>
         </div>
-        <div class="log">
-          <van-cell
-            title="我的健康日志"
-            is-link
-            value="查看全部"
-            class="title"
-          />
-          <div class="btn">
-            <div class="logbtn">
-              <van-button icon="add-o" size="small" round type="info"
-                >添加日志</van-button
-              >
-            </div>
-            <div class="vibtn">
-              <van-uploader>
-                <van-button icon="upgrade" size="small" round type="info"
-                  >图片/视频</van-button
-                >
-              </van-uploader>
-            </div>
+        <div class="fangan">
+          <div class="titlename">营养康复方案</div>
+          <div class="info">
+            <span>医生:丛明华</span>
+            <span>2020-7-20</span>
           </div>
-          <div class="newlog">
-            <div class="tltle">
-              最新日志
-            </div>
-            <div class="detail">
-              <div class="nav">
-                <van-row type="flex">
-                  <van-col span="12">
-                    <div class="left">
-                      <span class="title">2020.05.10</span>
-                      <span class="tit">填写标题</span>
-                    </div>
-                  </van-col>
-                  <van-col span="12" class="right">
-                    <div class="write">未填写</div>
-                  </van-col>
-                </van-row>
-              </div>
-              <div class="energy">
-                <van-row type="flex" justify="space-around" align="center">
-                  <van-col span="12">
-                    <div class="recommend">
-                      <span>推荐能量</span>
-                      <h3>200单位</h3>
-                    </div>
-                    <div class="recommend CompletionRate">
-                      <span class="name">完成率</span>
-                      <h2>50%</h2>
-                      <span class="name">未达标</span>
-                    </div>
-                  </van-col>
-                  <van-col span="12">
-                    <div class="recommend">
-                      <span>推荐蛋白质</span>
-                      <h3>200单位</h3>
-                    </div>
-                    <div class="recommend CompletionRate">
-                      <span class="name">完成率</span>
-                      <h2>50%</h2>
-                      <span class="name">未达标</span>
-                    </div>
-                  </van-col>
-                </van-row>
-              </div>
-            </div>
+          <div class="zlyz">
+            治疗原则
+            <img src="@/assets/images/doctoradd (4).png" alt="" />
           </div>
-        </div>
-        <div class="chart">
-          <div class="wlzs">
-            <div class="title">握力走势图</div>
-            <canvas id="wlzs-chart" class="canvas"></canvas>
-          </div>
-          <div class="tzzs">
-            <div class="title">体重走势图</div>
-            <canvas id="tzzs-chart" class="canvas"></canvas>
-          </div>
-          <div class="yszs">
-            <div class="title">饮食评分走势图</div>
-            <canvas id="yszs-chart" class="canvas"></canvas>
-          </div>
-        </div>
-        <div class="KnowledgePush">
-          <div class="title">相关知识推送</div>
-          <div class="main">
-            <div class="hall">医生讲堂</div>
-            <div class="cont">
-              <van-row type="flex" align="center">
-                <van-col span="15" class="detail">
-                  <div class="title">
-                    复旦大学肿瘤学博士,复旦大学附属肿瘤医院 (上海肿瘤医院)
-                    肿瘤内科主治医生,复旦大学肿瘤学博士
-                  </div>
-                  <div class="name">
-                    邱立新 复旦大学附属肿瘤医院主治医师
-                  </div>
-                  <div class="rs">888人观看 700人观看 10积分</div>
-                </van-col>
-                <van-col span="6">
-                  <img
-                    :src="require('@/assets/images/hz202007241508 _20.png')"
-                    alt=""
-                  />
-                </van-col>
+          <div class="massage">
+            <div class="nums">
+              <van-row type="flex" justify="space-between" align="center">
+                <van-col span="9">建议摄入能量</van-col>
+                <van-col span="6" class="sz" style="color:#4EC0B8">{{
+                  fangan.nengliang ? fangan.nengliang : 0
+                }}</van-col>
+                <van-col span="6" style="text-align:right">千卡</van-col>
               </van-row>
+              <van-row type="flex" justify="space-between" align="center">
+                <van-col span="9">建议摄入蛋白质</van-col>
+                <van-col span="6" class="sz" style="color:#FD7E6F">{{
+                  fangan.danbaizhi ? fangan.danbaizhi : 0
+                }}</van-col>
+                <van-col span="6" style="text-align:right">克</van-col>
+              </van-row>
+            </div>
+            <div class="ywfa">
+              <div class="title">药物和食物具体方案</div>
+              <div class="time-line">
+                <!-- <van-steps
+                  direction="vertical"
+                  :active="active"
+                  active-color="#4589ED"
+                  active-icon="stop-circle-o"
+                >
+                  <van-step v-for="item in fangan.list" :key="item.time">
+                    <h3>快件已发货</h3>
+                    <p>{{ item.time }}</p>
+                  </van-step>
+                </van-steps> -->
+                <ul>
+                  <li v-for="item in fangan.list" :key="item.time">
+                    <span>{{ item.time }}</span>
+                    <span class="line"></span>
+                    <span>{{ item.info }}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -154,54 +106,16 @@
 </template>
 
 <script>
-const F2 = require("@antv/f2/lib/index");
+import { home } from "@/apis/home";
 export default {
   name: "patientIndex",
   data() {
     return {
-      images: [
-        require("@/assets/images/patient_banner.png"),
-        require("@/assets/images/patient_banner.png")
-      ],
+      images: [],
+      tixing: [],
+      fangan: {},
       isLoading: false,
-      data1: [
-        {
-          time: "2016-08-08 00:00:00",
-          tem: 10
-        },
-        {
-          time: "2016-08-08 00:10:00",
-          tem: 9
-        },
-        {
-          time: "2016-08-08 00:30:00",
-          tem: 1
-        },
-        {
-          time: "2016-08-09 00:35:00",
-          tem: 2
-        },
-        {
-          time: "2016-08-09 01:00:00",
-          tem: 3
-        },
-        {
-          time: "2016-08-09 01:20:00",
-          tem: 4
-        },
-        {
-          time: "2016-08-10 01:40:00",
-          tem: 5
-        },
-        {
-          time: "2016-08-10 02:00:00",
-          tem: 6
-        },
-        {
-          time: "2016-08-10 02:20:00",
-          tem: 1
-        }
-      ]
+      active: 4
     };
   },
   methods: {
@@ -209,188 +123,47 @@ export default {
       this.$router.push({ path: "log" });
     },
     onRefresh() {
-      setTimeout(() => {
-        this.$toast("刷新成功");
-        this.isLoading = false;
-      }, 1000);
+      this.load();
     },
-    onloadchart() {
-      var chart = new F2.Chart({
-        id: "wlzs-chart",
-        pixelRatio: window.devicePixelRatio
-      });
-      var defs = {
-        time: {
-          type: "timeCat",
-          mask: "MM/DD",
-          tickCount: 5,
-          range: [0, 1]
-        },
-        tem: {
-          type: "linear",
-          tickCount: 10,
-          ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          alias: "握力走势"
-        }
-      };
-      chart.source(this.data1, defs);
-      chart.axis("time", {
-        label: function label(text, index, total) {
-          var textCfg = {};
-          if (index === 0) {
-            textCfg.textAlign = "left";
-          } else if (index === total - 1) {
-            textCfg.textAlign = "right";
+    load() {
+      home()
+        .then(res => {
+          this.isLoading = false;
+          console.log(res);
+          this.images = res.data.banner;
+          this.fangan = res.data.fangan;
+          var myDate = new Date();
+          let getHours = myDate.getHours(); //获取当前小时数(0-23)
+          let getMinutes = myDate.getMinutes(); //获取当前分钟数(0-59)
+          if (getMinutes < 10) {
+            getMinutes = "0" + getMinutes;
           }
-          return textCfg;
-        }
-      });
-      chart.axis("tem", {
-        position: "right"
-      });
-      chart.tooltip({
-        alwaysShow: false,
-        offsetY: 0,
-        offsetX: 0,
-        showTitle: false,
-        triggerOn: "touchstart",
-        triggerOff: "touchend",
-        showCrosshairs: true,
-        showTooltipMarker: true
-      });
-      chart
-        .line()
-        .position("time*tem")
-        .shape("smooth");
-      chart
-        .point()
-        .position("time*tem")
-        .shape("smooth")
-        .style({
-          stroke: "#fff",
-          lineWidth: 1
-        });
-      chart.render();
-    },
-    ontzzschart() {
-      var chart = new F2.Chart({
-        id: "tzzs-chart",
-        pixelRatio: window.devicePixelRatio
-      });
-      var defs = {
-        time: {
-          type: "timeCat",
-          mask: "hh:mm",
-          tickCount: 5,
-          range: [0, 1]
-        },
-        tem: {
-          tickCount: 10,
-          ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          alias: "体重走势"
-        }
-      };
-      chart.source(this.data1, defs);
-      chart.axis("time", {
-        label: function label(text, index, total) {
-          var textCfg = {};
-          if (index === 0) {
-            textCfg.textAlign = "left";
-          } else if (index === total - 1) {
-            textCfg.textAlign = "right";
+          let hours = getHours * 3600 + getMinutes * 60;
+          console.log(hours);
+          let list = this.fangan.list;
+          let array = [];
+          let timestamp = [];
+          for (const key in list) {
+            array.push(key);
+            let hour = key.split(":")[0];
+            let min = key.split(":")[1];
+            let hourMin = hour * 3600 + min * 60;
+            this.$nextTick(() => {
+              if (hours < hourMin) {
+                timestamp.push(hourMin);
+                this.active = timestamp.length - 1;
+              }
+            });
           }
-          return textCfg;
-        }
-      });
-      chart.axis("tem", {
-        position: "right"
-      });
-      chart.tooltip({
-        alwaysShow: false,
-        offsetY: 0,
-        offsetX: 0,
-        showTitle: false,
-        triggerOn: "touchstart",
-        triggerOff: "touchend",
-        showCrosshairs: true,
-        showTooltipMarker: true
-      });
-      chart
-        .line()
-        .position("time*tem")
-        .shape("smooth");
-      chart
-        .point()
-        .position("time*tem")
-        .shape("smooth")
-        .style({
-          stroke: "#fff",
-          lineWidth: 1
+          this.tixing = res.data.tixing;
+        })
+        .catch(err => {
+          this.$toast(err.msg);
         });
-      chart.render();
-    },
-    onyszschart() {
-      var chart = new F2.Chart({
-        id: "yszs-chart",
-        pixelRatio: window.devicePixelRatio
-      });
-      var defs = {
-        time: {
-          type: "timeCat",
-          mask: "MM/DD",
-          tickCount: 5,
-          range: [0, 1]
-        },
-        tem: {
-          tickCount: 10,
-          ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          alias: "饮食评分走势"
-        }
-      };
-      chart.source(this.data1, defs);
-      chart.axis("time", {
-        label: function label(text, index, total) {
-          var textCfg = {};
-          if (index === 0) {
-            textCfg.textAlign = "left";
-          } else if (index === total - 1) {
-            textCfg.textAlign = "right";
-          }
-          return textCfg;
-        }
-      });
-      chart.axis("tem", {
-        position: "right"
-      });
-      chart.tooltip({
-        alwaysShow: false,
-        offsetY: 0,
-        offsetX: 0,
-        showTitle: false,
-        triggerOn: "touchstart",
-        triggerOff: "touchend",
-        showCrosshairs: true,
-        showTooltipMarker: true
-      });
-      chart
-        .line()
-        .position("time*tem")
-        .shape("smooth");
-      chart
-        .point()
-        .position("time*tem")
-        .shape("smooth")
-        .style({
-          stroke: "#fff",
-          lineWidth: 1
-        });
-      chart.render();
     }
   },
   mounted() {
-    this.onloadchart();
-    this.ontzzschart();
-    this.onyszschart();
+    this.load();
   }
 };
 </script>
@@ -403,6 +176,7 @@ export default {
 
   .my-swipe {
     transform: translateZ(0);
+    // height: 150px;
     .van-swipe-item {
       color: #fff;
       font-size: 20px;
@@ -410,16 +184,19 @@ export default {
       line-height: 150px;
       text-align: center;
       background-color: #39a9ed;
+      a,
+      img {
+        display: block;
+      }
     }
   }
   .content {
-    padding: 10px;
     .remind {
+      margin: 10px;
       background-color: #fff;
       border-radius: 15px;
       text-align: left;
       padding: 13px;
-      margin-top: 10px;
       .titlename {
         font-size: 15px;
         font-weight: 500;
@@ -487,173 +264,64 @@ export default {
         }
       }
     }
-    .log {
-      margin-top: 10px;
-      padding: 10px;
+    .fangan {
       background-color: #fff;
-      border-radius: 15px;
-      .van-cell {
-        padding: 10px 0;
-        &::after {
-          left: 0;
-          right: 0;
-        }
-      }
-      .van-cell--clickable:active {
-        background: transparent;
-      }
-      .title {
+      padding: 11px;
+      .titlename {
         font-size: 15px;
+        font-weight: 500;
+        color: #151515;
+        padding: 0 0 10px;
+        margin: 0 21px;
+        border-bottom: 1px solid #ebebeb;
       }
-      .btn {
-        padding: 24px 0;
-        border-bottom: 1px solid #ebedf0;
-        .logbtn {
-          text-align: left;
+      .info {
+        color: #9b9b9b;
+        font-size: 12px;
+        margin: 5px 21px;
+        position: relative;
+        span {
           display: inline-block;
-          width: 45%;
-          margin-left: 17px;
-        }
-        .vibtn {
-          text-align: right;
-          display: inline-block;
-          width: 45%;
-        }
-        .van-button {
-          width: 125px;
-        }
-      }
-      .newlog {
-        margin-top: 18px;
-        .nav {
-          margin-top: 9px;
-          color: #f33900;
-          background-color: #fdd7cb;
-          padding: 5px;
-          border-radius: 4px;
-          .left {
-            text-align: left;
-            .tit {
-              font-size: 10px;
-              margin-left: 9px;
-            }
-          }
-          .right {
-            position: relative;
-            .write {
-              position: absolute;
-              right: 0;
-              width: 46px;
-              text-align: center;
-              color: #fff;
-              font-size: 12px;
-              border-radius: 8px;
-              background: #f33900;
-            }
-          }
-        }
-        .energy {
-          padding: 16px 0;
-          border-bottom: 1px solid #e9e7e8;
-          .recommend {
-            &:nth-child(2n-1) {
-              margin-left: 10px;
-            }
-            display: inline-block;
-            h3,
-            h2 {
-              display: block;
-            }
-            &.CompletionRate {
-              // margin-left: 15px;
-              text-align: center;
-              width: 75px;
-              padding: 10px;
-              color: #fff;
-              // background-color: #2880f4;
-              background-image: linear-gradient(#4ca3fa, #2880f4);
-              border-radius: 50%;
-              .name {
-                font-size: 8px;
-              }
-              h2 {
-                font-size: 15px;
-                font-weight: bold;
-              }
-            }
+          &:last-child {
+            position: absolute;
+            right: 0;
           }
         }
       }
-    }
-    .chart {
-      margin-top: 10px;
-      background-color: #fff;
-      border-radius: 15px;
-      padding: 13px 15px;
-      .title {
-        margin-top: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e9e7ea;
-      }
-      .canvas {
-        width: 100%;
-        height: 200px;
-      }
-    }
-    .KnowledgePush {
-      margin-top: 10px;
-      background-color: #fff;
-      border-radius: 15px;
-      padding: 13px 15px;
-      .title {
-        font-size: 15px;
-        padding: 7px 0 20px 0;
-        border-bottom: 1px solid #eae8eb;
-      }
-      .main {
-        .hall {
-          font-size: 14px;
-          margin: 11px 0;
+      .zlyz {
+        color: #9b9b9b;
+        font-size: 12px;
+        margin: 0 21px 10px;
+        text-align: right;
+        img {
+          vertical-align: text-bottom;
+          width: 15px;
         }
-        .cont {
-          // background-color: #ddd;
-          // font-size: 10px;
-          .detail {
-            width: 200px;
-            margin-right: 10px;
+      }
+      .massage {
+        background-color: #f5f5f5;
+        padding: 15px 13px;
+        .nums {
+          background: rgba(255, 255, 255, 1);
+          border-radius: 6px;
+          margin-bottom: 12px;
+          .van-row {
+            padding: 10px;
+            font-size: 12px;
+            .sz {
+              font-size: 20px;
+            }
+            &:first-child {
+              border-bottom: 1px solid #d2d2d2;
+            }
           }
+        }
+        .ywfa {
+          padding: 10px;
           .title {
-            border-bottom: none;
-            font-size: 12px;
-            padding: 0;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-          }
-          .name {
-            font-size: 10px;
-            color: #908d90;
-            margin-top: 8px;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .rs {
-            font-size: 12px;
-            margin-top: 4px;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-        .van-col {
-          img {
-            width: 115px;
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 16px;
           }
         }
       }
