@@ -78,24 +78,17 @@
             <div class="ywfa">
               <div class="title">药物和食物具体方案</div>
               <div class="time-line">
-                <!-- <van-steps
+                <van-steps
                   direction="vertical"
                   :active="active"
                   active-color="#4589ED"
                   active-icon="stop-circle-o"
                 >
                   <van-step v-for="item in fangan.list" :key="item.time">
-                    <h3>快件已发货</h3>
+                    <h3>{{ item.info }}</h3>
                     <p>{{ item.time }}</p>
                   </van-step>
-                </van-steps> -->
-                <ul>
-                  <li v-for="item in fangan.list" :key="item.time">
-                    <span>{{ item.time }}</span>
-                    <span class="line"></span>
-                    <span>{{ item.info }}</span>
-                  </li>
-                </ul>
+                </van-steps>  
               </div>
             </div>
           </div>
@@ -115,7 +108,7 @@ export default {
       tixing: [],
       fangan: {},
       isLoading: false,
-      active: 4
+      active: 0
     };
   },
   methods: {
@@ -148,10 +141,12 @@ export default {
             let hour = key.split(":")[0];
             let min = key.split(":")[1];
             let hourMin = hour * 3600 + min * 60;
+            // console.log(timestamp.length);
             this.$nextTick(() => {
-              if (hours < hourMin) {
+              if (hours > hourMin) {
                 timestamp.push(hourMin);
                 this.active = timestamp.length - 1;
+                console.log(this.active);
               }
             });
           }
@@ -322,6 +317,19 @@ export default {
             font-weight: 500;
             font-size: 15px;
             margin-bottom: 16px;
+          }
+          .time-line {
+            .van-steps {
+              padding-left: 68px;
+              .van-step__title {
+                p {
+                  display: inline-table;
+                  position: absolute;
+                  left: -60px;
+                  top: 10px;
+                }
+              }
+            }
           }
         }
       }
