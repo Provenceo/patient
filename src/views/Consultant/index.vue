@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <van-empty image="network" description="暂无数据" />
   </div>
 </template>
 

@@ -3,48 +3,71 @@
 </template>
 
 <script>
+import { oauth } from "@/apis/login";
 export default {
   data() {
-    return {};
+    return {
+      parmas: {
+        code: "",
+        pid: "",
+        ty: 0
+      }
+    };
   },
   methods: {
     getCode() {
       // 非静默授权，第一次有弹框
-      this.code = "";
+      this.parmas.code = "";
       var local = window.location.href; // 获取页面url
       var appid = "wx0c5fe766d97cd585";
-      this.code = this.getUrlCode().code; // 截取code
-      if (this.code == null || this.code === "") {
+      this.parmas.code = this.getUrlCode("code"); // 截取code
+      if (this.getUrlCode("pid")) {
+        localStorage.setItem("pid", this.getUrlCode("pid"));
+      }
+      if (this.parmas.code == null || this.parmas.code === "") {
         // 如果没有code，则去请求
-        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
-          local
-        )}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
+        window.location.replace(
+          `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+            local
+          )}&response_type=code&scope=snsapi_userinfo&state=${Math.random()}#wechat_redirect`
+        );
       } else {
-        // 你自己的业务逻辑
+        this.parmas.code = this.getUrlCode("code");
+        if (this.getUrlCode("pid")) {
+          localStorage.setItem("pid", this.getUrlCode("pid"));
+        }
+        // this.parmas.pid = this.getUrlCode("pid");
       }
     },
-    getUrlCode() {
-      // 截取url中的code方法
-      var url = location.search;
-      this.winUrl = url;
-      var theRequest = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.substr(1);
-        var strs = str.split("&");
-        for (var i = 0; i < strs.length; i++) {
-          theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
+    getUrlCode(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+  },
+  watch: {
+    "parmas.code": {
+      handler(newName, oldName) {
+        // console.log( this.parmas.code, this.parmas.pid)
+        if (newName) {
+          oauth({ code: newName, pid: this.parmas.pid | localStorage.getItem('pid'), ty: 0 })
+            .then(res => {
+              sessionStorage.setItem("token", res.data.token);
+              window.location.href =
+                window.location.origin + window.location.pathname;
+            })
+            .catch(err => {
+              this.$toast(err.msg);
+            });
         }
-      }
-      return theRequest;
+      },
+      immediate: true,
+      deep: true
     }
   },
   mounted() {
-    if (!window.localStorage.getItem("openId")) {
-      // 如果缓存localStorage中没有微信openId，则需用code去后台获取
-      this.getCode();
-    } else {
-      // 别的业务逻辑
-    }
+    this.getCode();
   }
 };
 </script>

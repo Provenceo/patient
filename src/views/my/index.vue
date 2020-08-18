@@ -6,59 +6,38 @@
         <van-row type="flex" align="center" justify="space-around">
           <van-col span="6">
             <div class="avater">
-              <img src="@/assets/images/hz202007241508 _2.png" alt="" />
+              <img :src="user.txurl" alt="" />
             </div>
           </van-col>
-          <van-col span="18">
+          <van-col span="18" :offset="1">
             <div class="information">
-              <span class="nickname">土豆炖粉条</span>
-              <span class="mobile">18888888888</span>
+              <span class="nickname">{{ user.name }}</span>
+              <span class="mobile">{{ user.tel1 }}</span>
             </div>
             <div class="medicalrecord">
-              肺部 &nbsp; 编号：2020110001&nbsp;&nbsp;<span>></span>
+              {{ user.jibing }} &nbsp; 编号：{{ user.hzno }}&nbsp;&nbsp;<span
+                >></span
+              >
             </div>
           </van-col>
           <van-col span="4" :offset="1">
-            <div class="code">
+            <!-- v-show="user.erweima_url" -->
+            <div class="code" v-show="user.erweima_url">
               <img src="@/assets/images/hz202007241508 _1.png" alt="" />
             </div>
           </van-col>
         </van-row>
       </div>
       <div class="push">
-        <div class="pushmass">
+        <div class="pushmass" v-for="item in tixing" :key="item.id">
           <van-row type="flex" justify="space-around">
             <van-col span="8">
-              <div class="review">复查通知：</div>
+              <div class="review">通知：</div>
             </van-col>
-            <van-col span="10">
+            <van-col span="12">
               <div class="content">
-                术后1个月复查
-                <div>(2020年5月20号)</div>
-              </div>
-            </van-col>
-            <van-col span="6">
-              <div class="time">
-                2天后
-              </div>
-            </van-col>
-          </van-row>
-        </div>
-        <van-divider
-          :style="{
-            borderColor: '#dddd'
-          }"
-        />
-
-        <div class="logmass">
-          <van-row type="flex" justify="space-around">
-            <van-col span="8">
-              <div class="review">健康日志通知：</div>
-            </van-col>
-            <van-col span="10">
-              <div class="content">
-                术后7天填写
-                <div class="datetime">(2020年5月20号)</div>
+                {{ item.title }}
+                <div>({{ item.created }})</div>
               </div>
             </van-col>
             <van-col span="6">
@@ -102,6 +81,7 @@
 </template>
 
 <script>
+import { getMyInfo } from "@/apis/my";
 export default {
   data() {
     return {
@@ -116,58 +96,77 @@ export default {
           name: "我的病历",
           imgSrc: require("@/assets/images/hz202007241508 _5.png"),
           info: "",
-          path: "myrecord"
+          path: "HistoricalCases"
         },
         {
           name: "治疗方案",
           imgSrc: require("@/assets/images/hz202007241508 _11.png"),
           info: "",
-          path: ""
+          path: "HistoricalPlan"
         },
         {
           name: "营养处方",
           imgSrc: require("@/assets/images/hz202007241508 _10.png"),
           info: "",
-          path: ""
-        },
-        {
-          name: "我的积分",
-          imgSrc: require("@/assets/images/hz202007241508 _9.png"),
-          info: "",
-          path: ""
-        },
-        {
-          name: "留言板",
-          imgSrc: require("@/assets/images/hz202007241508 _3.png"),
-          info: "99",
-          path: ""
-        },
-        {
-          name: "我的收藏",
-          imgSrc: require("@/assets/images/hz202007241508 _4.png"),
-          info: "99+",
-          path: ""
-        },
-        {
-          name: "调查问卷",
-          imgSrc: require("@/assets/images/hz202007241508 _6.png"),
-          info: "",
-          path: ""
-        },
-        {
-          name: "直播关注",
-          imgSrc: require("@/assets/images/hz202007241508 _7.png"),
-          info: "",
-          path: ""
-        },
-        {
-          name: "意见反馈",
-          imgSrc: require("@/assets/images/hz202007241508 _8.png"),
-          info: "",
-          path: ""
+          path: "Historicalyycf"
         }
-      ]
+        // {
+        //   name: "我的积分",
+        //   imgSrc: require("@/assets/images/hz202007241508 _9.png"),
+        //   info: "",
+        //   path: ""
+        // },
+        // {
+        //   name: "留言板",
+        //   imgSrc: require("@/assets/images/hz202007241508 _3.png"),
+        //   info: "99",
+        //   path: ""
+        // },
+        // {
+        //   name: "我的收藏",
+        //   imgSrc: require("@/assets/images/hz202007241508 _4.png"),
+        //   info: "99+",
+        //   path: ""
+        // },
+        // {
+        //   name: "调查问卷",
+        //   imgSrc: require("@/assets/images/hz202007241508 _6.png"),
+        //   info: "",
+        //   path: ""
+        // },
+        // {
+        //   name: "直播关注",
+        //   imgSrc: require("@/assets/images/hz202007241508 _7.png"),
+        //   info: "",
+        //   path: ""
+        // },
+        // {
+        //   name: "意见反馈",
+        //   imgSrc: require("@/assets/images/hz202007241508 _8.png"),
+        //   info: "",
+        //   path: ""
+        // }
+      ],
+      user: {},
+      tixing: []
     };
+  },
+  methods: {
+    myinfo() {
+      getMyInfo()
+        .then(res => {
+          this.user = res.data.user;
+          this.tixing = res.data.tixing.slice(0,2);
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err.msg);
+        });
+    }
+  },
+  mounted() {
+    this.myinfo();
   }
 };
 </script>
@@ -194,6 +193,7 @@ export default {
         img {
           height: 67px;
           width: 67px;
+          border-radius: 50%;
         }
       }
       .information {
@@ -237,24 +237,17 @@ export default {
       margin: 0 10px;
       .pushmass {
         padding: 14px 0 0;
+        margin-bottom: 8px;
+        &:first-child {
+          padding-bottom: 20px;
+          border-bottom: 1px solid rgba(229,242,254,1);
+        }
         .content {
           text-align: left;
-        }
-        .time {
-          width: 67px;
-          height: 32px;
-          line-height: 32px;
-          border: 1px solid #fff;
-          border-radius: 32px;
-        }
-      }
-      .logmass {
-        padding: 0 0 14px;
-        .content {
-          text-align: left;
-          .datetime {
-            margin-left: 0px;
-          }
+          width: 153px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         .time {
           width: 67px;

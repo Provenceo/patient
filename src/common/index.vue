@@ -1,7 +1,6 @@
 <template>
   <div class="page">
     <router-view></router-view>
-
     <div class="nav-footer" v-if="$route.meta.navShow">
       <footer>
         <router-link
@@ -10,8 +9,8 @@
           :key="index"
           :class="{ active: activeRoute == item.path }"
         >
-          <div class="iconfont" :class="item.icon"></div>
-          <p>{{item.name}}</p>
+          <div :class="'tab-' + index"></div>
+          <p v-text="item.name" :class="{ active: activeRoute == item.path }"></p>
         </router-link>
       </footer>
     </div>
@@ -20,29 +19,28 @@
 
 <script>
 export default {
-  name: "patient",
   data() {
     return {
       navList: [
         {
           path: "/home",
-          icon: "icon-shouye",
-          name: "首页"
+          name: "康复方案"
         },
         {
-          path: "/healthlog",
-          icon: "icon-rizhi",
+          path: "/patient",
           name: "健康日志"
         },
+        // {
+        //   path: "/consultant",
+        //   name: "康复社区"
+        // },
         {
-          path: "/footprints",
-          icon: "icon-02",
-          name: "知识/直播"
+          path: "/consultant",
+          name: "疾病知识"
         },
         {
           path: "/my",
-          icon: "icon-gerenzhongxinyonghu01",
-          name: "个人中心"
+          name: "我的信息"
         }
       ]
     };
@@ -56,22 +54,9 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "~@/styles/index.less";
 @import "~@/styles/variable.less";
-.page {
-  .title {
-    position: fixed;
-    top: -3px;
-    width: 100%;
-    height: 35px;
-    line-height: 35px;
-    font-size: 16px;
-    color: #1a1a1a;
-    background-color: #fff;
-    z-index: 999999;
-  }
-}
 .nav-footer {
   position: fixed;
   left: 0px;
@@ -79,7 +64,6 @@ export default {
   width: 100%;
   .h(98);
   background: @tab-general-bg-color;
-  padding-bottom: 65px;
   display: block;
   footer {
     font-size: 0;
@@ -91,7 +75,6 @@ export default {
     .h(98);
     display: flex;
     a {
-      font-size: 16px!important;
       text-decoration: none;
       color: @base-font-color;
       -webkit-box-flex: 1;
@@ -102,7 +85,17 @@ export default {
       text-align: center;
       box-sizing: border-box;
       display: block;
-      .fs(10);
+      .fs(22);
+      // .tab-0,
+      // .tab-1,
+      // .tab-2,
+      // .tab-3,
+      // .tab-4 {
+      //   display: inline-block;
+      //   .h(42);
+      //   .w(42);
+      //   background-size: cover;
+      // }
       .tab-0,
       .tab-1,
       .tab-2,
@@ -112,17 +105,52 @@ export default {
         .w(42);
         background-size: cover;
       }
+      .tab-0 {
+        background-image: url("~@/assets/images/20200730_03.jpg");
+      }
+      .tab-1 {
+        background-image: url("~@/assets/images/huanzhejkrz.png");
+      }
+      .tab-2 {
+      //   background-image: url("~@/assets/images/huanzhekfsq.png");
+       background-image: url("~@/assets/images/huanzhejbzs.png");
+      }
+      .tab-3 {
+        // background-image: url("~@/assets/images/huanzhejbzs.png");
+        background-image: url("~@/assets/images/huanzhewd.png");
+      }
+      // .tab-4 {
+        
+      // }
       &:hover {
         text-decoration: none;
       }
+      &.router-link-active.active {
+        .tab-0 {
+          background-image: url("~@/assets/images/20200730_03.png");
+        }
+        .tab-1 {
+          background-image: url("~@/assets/images/20200730_09.jpg");
+        }
+        .tab-2 {
+        //   background-image: url("~@/assets/images/20200730_06.jpg");
+        background-image: url("~@/assets/images/20200730_12.jpg");
+        }
+        .tab-3 {
+          // background-image: url("~@/assets/images/20200730_12.jpg");
+           background-image: url("~@/assets/images/20200730_14.png");
+        }
+        .tab-4 {
+          background-image: url("~@/assets/images/20200730_14.png");
+        }
+      }
     }
     p {
-      margin-top: 5px;
-      font-size: 12px;
+      margin: 0;
+      &.active {
+        color: #2B89F5;
+      }
     }
-  }
-  .active {
-    color: #4589ed;
   }
 }
 </style>

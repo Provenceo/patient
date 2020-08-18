@@ -13,12 +13,16 @@
     "@antv/f2": "^3.7.1-beta.2",
     "axios": "^0.19.2",
     "fastclick": "^1.0.6",
+    "hls.js": "^0.14.8",
     "less": "^3.12.0",
     "less-loader": "^4.1.0",
     "lib-flexible": "^0.3.2",
     "postcss-pxtorem": "^5.1.1",
     "vant": "^2.9.2",
+    "video.js": "^7.8.4",
+    "videojs-contrib-hls": "^5.15.0",
     "vue": "^2.5.2",
+    "vue-aplayer": "^1.6.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

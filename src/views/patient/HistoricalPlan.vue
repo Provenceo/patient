@@ -1,6 +1,6 @@
 <template>
   <div id="HistoricalPlan">
-    <van-nav-bar title="历史方案" left-arrow @click-left="onClickLeft">
+    <van-nav-bar title="治疗方案" left-arrow @click-left="onClickLeft">
     </van-nav-bar>
     <div class="main" v-if="list.length">
       <van-row
@@ -9,6 +9,7 @@
         align="center"
         v-for="item in list"
         :key="item.id"
+        @click="$router.push(`/myPlan/${item.id}`)"
       >
         <van-col span="4">
           <div class="rl">
@@ -20,20 +21,15 @@
         <van-col span="3"></van-col>
       </van-row>
     </div>
-    <van-empty
-      image="error"
-      description="暂无数据"
-      v-if="list.length === 0"
-    />
+    <van-empty image="error" description="暂无数据" v-if="list.length === 0" />
   </div>
 </template>
 
 <script>
-import { fangan } from "@/apis/treatmentplan";
+import { getMyPlanList } from "@/apis/my";
 export default {
   data() {
     return {
-      id: "",
       list: []
     };
   },
@@ -41,8 +37,8 @@ export default {
     onClickLeft() {
       this.$router.go(-1); //返回上一层
     },
-    fangan() {
-      fangan({ pid: this.id })
+    getMyPlan() {
+      getMyPlanList()
         .then(({ data }) => {
           data.list.forEach(item => {
             item.created = item.created.replace(/-/g, "/");
@@ -54,13 +50,13 @@ export default {
         .catch(err => {
           this.$toast(err.msg);
         });
+    },
+    getPlan(id) {
+      console.log(id);
     }
   },
   mounted() {
-    this.fangan();
-  },
-  created() {
-    this.id = this.$route.params.id;
+    this.getMyPlan();
   }
 };
 </script>
@@ -91,7 +87,7 @@ export default {
       .title {
         font-size: 20px;
         font-weight: 500;
-        color: rgba(64,64,64,1);
+        color: rgba(64, 64, 64, 1);
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;

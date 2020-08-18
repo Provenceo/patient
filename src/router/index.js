@@ -8,11 +8,6 @@ Vue.use(Toast);
 var router = new Router({
   // mode: "history",
   routes: [{
-      path: '/login',
-      name: 'login',
-      component: () => import('@/components/login'),
-    },
-    {
       path: '/wechatAuthorization',
       name: 'wechatAuthorization',
       component: () => import('@/components/wechatAuthorization'),
@@ -32,6 +27,15 @@ var router = new Router({
           },
         },
         {
+          path: 'fangan/:id',
+          name: 'fangan',
+          component: () => import('@/views/dashboard/fangan'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
           path: 'patient',
           name: 'patient',
           component: () => import('@/views/patient/index'),
@@ -41,43 +45,43 @@ var router = new Router({
           },
         },
         {
-          path: 'addPatient',
-          name: 'addPatient',
-          component: () => import('@/views/patient/add'),
+          path: 'BodyAndExercise',
+          name: 'BodyAndExercise',
+          component: () => import('@/views/patient/BodyAndExercise'),
           meta: {
             requireAuth: true,
             navShow: false
           },
         },
         {
-          path: 'detail/:id',
-          name: 'detail',
-          component: () => import('@/views/patient/detail'),
+          path: 'DrugUse',
+          name: 'DrugUse',
+          component: () => import('@/views/patient/DrugUse'),
           meta: {
             requireAuth: true,
             navShow: false
           },
         },
         {
-          path: 'record/:detail',
-          name: 'record',
-          component: () => import('@/views/patient/records'),
+          path: 'bool',
+          name: 'bool',
+          component: () => import('@/views/patient/bool'),
           meta: {
             requireAuth: true,
             navShow: false
           },
         },
         {
-          path: 'newNutritionPrescription/:id',
-          name: 'newNutritionPrescription',
-          component: () => import('@/views/patient/newNutritionPrescription'),
+          path: 'Physical',
+          name: 'Physical',
+          component: () => import('@/views/patient/Physical'),
           meta: {
             requireAuth: true,
             navShow: false
           },
         },
         {
-          path: 'TreatmentPlan/:id',
+          path: 'TreatmentPlan/:item',
           name: 'TreatmentPlan',
           component: () => import('@/views/patient/TreatmentPlan'),
           meta: {
@@ -86,7 +90,7 @@ var router = new Router({
           },
         },
         {
-          path: 'HistoricalPlan/:id',
+          path: 'HistoricalPlan',
           name: 'HistoricalPlan',
           component: () => import('@/views/patient/HistoricalPlan'),
           meta: {
@@ -95,7 +99,25 @@ var router = new Router({
           },
         },
         {
-          path: 'HistoricalCases/:id',
+          path: 'myPlan/:id',
+          name: 'plan',
+          component: () => import('@/views/patient/plan'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
+          path: 'jkrzxc/:id',
+          name: 'jkrzxc',
+          component: () => import('@/views/patient/jkrzxq'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
+          path: 'HistoricalCases',
           name: 'HistoricalCases',
           component: () => import('@/views/patient/HistoricalCases'),
           meta: {
@@ -104,18 +126,45 @@ var router = new Router({
           },
         },
         {
-          path: 'SoftFood/:item',
-          name: 'SoftFood',
-          component: () => import('@/views/patient/SoftFood'),
+          path: 'MyRecordDetail/:id',
+          name: 'MyRecordDetail',
+          component: () => import('@/views/patient/MyRecordDetail'),
           meta: {
             requireAuth: true,
             navShow: false
           },
         },
         {
-          path: 'SemiLiquidFood/:item',
-          name: 'SemiLiquidFood',
-          component: () => import('@/views/patient/SemiLiquidFood'),
+          path: 'Historicalyycf',
+          name: 'Historicalyycf',
+          component: () => import('@/views/patient/Historicalyycf'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
+          path: 'yycf/:id',
+          name: 'yycf',
+          component: () => import('@/views/patient/yycf'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
+          path: 'food',
+          name: 'food',
+          component: () => import('@/views/patient/food'),
+          meta: {
+            requireAuth: true,
+            navShow: false
+          },
+        },
+        {
+          path: 'line',
+          name: 'line',
+          component: () => import('@/views/patient/line'),
           meta: {
             requireAuth: true,
             navShow: false
@@ -182,22 +231,23 @@ var router = new Router({
 
 router.beforeEach((to, from, next) => {
   // 新增营养处方需要用到localStorage 同时需要跨页面选择
-  if (to.name !== "SemiLiquidFood" && to.name !== "SoftFood" && to.name !== "newNutritionPrescription" && to.name !== "TakingProducts") {
+  if (to.name !== "TreatmentPlan" && to.name !== "food") {
     localStorage.removeItem("form")
   }
-  //   // 在判断时，需要将 login 路由排除掉
-  //   if (to.meta.requireAuth == true) {
-  //     // 判断用户是否登录:验证 token
-  //     var token = window.sessionStorage.getItem('token')
-  //     if (!token && to.path !== '/404') {
-  //       Toast('您还没有登录，请先登录')
-  //       router.push('/login')
-  //     } else {
-  //       next()
-  //     }
-  //   } else {
-  next()
-  //   }
+  // sessionStorage.setItem('token','c76c889d8d1ca8b025a3edd16383acf6')
+  // 在判断时，需要将 login 路由排除掉
+  if (to.meta.requireAuth == true) {
+    // 判断用户是否登录:验证 token
+    var token = window.sessionStorage.getItem('token')
+    if (!token && to.path !== '/404') {
+      // Toast('请授权后登陆')
+      router.push('/wechatAuthorization')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

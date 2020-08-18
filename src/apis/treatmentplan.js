@@ -1,16 +1,12 @@
 import http from '@/utils/request'
 
-export const addfangan = (params) => {
+// 健康日志详情
+// 
+export const getHealthLogDetail = (params) => {
   return http({
-    url: '/api/doctor/addfangan',
+    url: '/api/Patient/getHealthLogDetail',
     method: 'post',
     data: params
   })
 }
-export const fangan = (params) => {
-  return http({
-    url: 'api/doctor/fangan',
-    method: 'post',
-    data: params
-  })
-}
+

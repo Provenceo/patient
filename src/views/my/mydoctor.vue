@@ -12,7 +12,7 @@
           <van-row type="flex" align="center" justify="space-around">
             <van-col span="8">
               <div class="avater">
-                <img src="@/assets/images/patient_doctor.png" alt="" />
+                <img :src="info.txurl" alt="" />
               </div>
             </van-col>
             <van-col span="16">

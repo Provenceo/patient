@@ -1,6 +1,6 @@
 <template>
   <div id="HistoricalCases">
-    <van-nav-bar title="历史病例" left-arrow @click-left="onClickLeft">
+    <van-nav-bar title="病例列表" left-arrow @click-left="onClickLeft">
     </van-nav-bar>
     <div class="main" v-if="list.length">
       <van-row
@@ -9,6 +9,7 @@
         align="center"
         v-for="item in list"
         :key="item.id"
+          @click="$router.push(`/MyRecordDetail/${item.id}`)"
       >
         <van-col span="4">
           <div class="rl">
@@ -29,11 +30,10 @@
 </template>
 
 <script>
-import { bingli } from "@/apis/record";
+import { getMyRecordList } from "@/apis/my";
 export default {
   data() {
     return {
-      id: "",
       list: []
     };
   },
@@ -42,7 +42,7 @@ export default {
       this.$router.go(-1); //返回上一层
     },
     bingli() {
-      bingli({ pid: this.id })
+      getMyRecordList()
         .then(({ data }) => {
           data.list.forEach(item => {
             item.created = item.created.replace(/-/g, "/");
@@ -54,14 +54,15 @@ export default {
         .catch(err => {
           this.$toast(err.msg);
         });
+    },
+    getCases(id){
+      console.log(id)
     }
   },
   mounted() {
     this.bingli();
   },
-  created() {
-    this.id = this.$route.params.id;
-  }
+  
 };
 </script>
 

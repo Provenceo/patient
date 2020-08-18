@@ -9,14 +9,12 @@ const service = axios.create({
   timeout: 10000 // request timeout
 })
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-if (router.history.current.path !== '/login') {
-  // 在请求头中添加 Authorization
-  // 进行局部设置
-  axios.defaults.headers['Authorization'] = window.sessionStorage.getItem('token') || ''
-}
 // 在 axios 的拦截器中添加一段内容：
 service.interceptors.request.use(function (config) {
   // 只要在请求非 login 时才需要执行
+  if (sessionStorage.getItem("token") != null) {
+    config.headers["token"] = sessionStorage.getItem("token");
+  }
   if (config.method == 'post') {
     config.params = {
       t: `${Date.parse(new Date()) / 1000}${Math.round(Math.random() * 10)}`
