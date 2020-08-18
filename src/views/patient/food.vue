@@ -38,7 +38,7 @@
           <div class="foodMain" v-if="form.zaocan_list">
             <div class="food" v-for="list in form.zaocan_list" :key="list.id">
               <van-row type="flex" align="center">
-                <van-col span="4">
+                <van-col span="5">
                   <div class="num">{{ list.id }}</div>
                 </van-col>
                 <van-col span="15" :offset="6">
@@ -91,7 +91,7 @@
           <div class="foodMain" v-if="form.wucan_list.length">
             <div class="food" v-for="list in form.wucan_list" :key="list.id">
               <van-row type="flex" align="center">
-                <van-col span="4">
+                <van-col span="5">
                   <div class="num">{{ list.id }}</div>
                 </van-col>
                 <van-col span="15" :offset="6">
@@ -144,7 +144,7 @@
           <div class="foodMain" v-if="form.wancan_list.length">
             <div class="food" v-for="list in form.wancan_list" :key="list.id">
               <van-row type="flex" align="center">
-                <van-col span="4">
+                <van-col span="5">
                   <div class="num">{{ list.id }}</div>
                 </van-col>
                 <van-col span="15" :offset="6">
@@ -173,7 +173,7 @@
             @cancel="showjcPicker = false"
           />
         </van-popup>
-        <h1>加餐建议</h1>
+        <h1>加餐食品</h1>
         <div v-for="(item, index) in form.jiacan_list" :key="index">
           <van-field
             readonly
@@ -203,7 +203,7 @@
             :key="list.id"
           >
             <van-row type="flex" align="center">
-              <van-col span="4">
+              <van-col span="5">
                 <div class="num">{{ list.id }}</div>
               </van-col>
               <van-col span="15" :offset="6">
